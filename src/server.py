@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import log
 import threading
+import resolve
 
 logging = log.init_logger("SessionStealer", True)
 
@@ -72,7 +73,7 @@ class SessionStealer:
         path = "/html/body/main/div/section[1]/div/div/section/h1"
 
         c_event = None
-        ia = None
+
         def inp():
             input()
 
@@ -81,6 +82,9 @@ class SessionStealer:
         
         while t.is_alive():
             try:
+                if not "evenementen" in self.browser.current_url:
+                    time.sleep(1)
+                    continue
                 # Probeer de titel te vinde
                 element = self.browser.find_element_by_xpath(path)
                 c_event = element.text
@@ -93,7 +97,47 @@ class SessionStealer:
                 pass
         print("")
 
+        if c_event == None:
+            logging.critical("No event selected!")
+            self.browser.quit()
+            exit(1)
+
         url = self.browser.current_url
         logging.debug(f"Selected target URL: {url}")
 
+        # Probeer uit te vogelen vanaf wanneer we kunnen aanmelden
+        txpath = "/html/body/main/div/section[1]/div/div/nav/div[2]/dl/dd"
+        vxpath = "/html/body/main/div/section[1]/div/div/nav/div[2]/dl/dt"
 
+        
+        try:
+            te = self.browser.find_element_by_xpath(txpath)
+            
+            if te.text == "Aanmelden voor dit evenement is niet meer mogelijk":
+                logging.error("Can't sign up for this event!")
+                return None
+            elif te.text == "Aangemeld":
+                logging.error("Already signed up for this event!")
+                return None
+
+            # Nested try blocks fuck yes
+            try:
+                ve = self.browser.find_element_by_xpath(vxpath)
+                if ve.text == "Aanmelden mogelijk tot":
+                    logging.warn("Enrollment already possible!")
+                    return (url, self.koekjes, -1)
+            except exceptions.NoSuchElementException:
+                pass
+
+            tie = resolve.resolve_datetime(te.text)
+            logging.debug(f"Resolved time: {tie}")
+
+            return (url, self.koekjes, tie)
+
+
+        except exceptions.NoSuchElementException:
+            logging.warn("Could not find elements to figure out time")
+            return (url, self.koekjes, None)
+
+    def bexit(self):
+        self.browser.quit()
