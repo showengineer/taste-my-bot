@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 selenium = "*"
 colorlog = "*"
+requests = "*"
+requests-toolbelt = "*"
 
 [dev-packages]
 pylint = "*"

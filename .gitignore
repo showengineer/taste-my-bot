@@ -142,3 +142,5 @@ research/
 assets/
 
 .vscode/
+
+Pipfile.lock

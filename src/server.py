@@ -24,8 +24,11 @@ class SessionStealer:
         logging.debug("Navigating to login page!")
         self.browser.get(self.t_url)
 
-
-        wait = WebDriverWait(self.browser, 60, 0.5)
+        try:
+            wait = WebDriverWait(self.browser, 60, 0.5)
+        except exceptions.TimeoutException:
+            logging.critical("Kon niet inloggen, timeout")
+            return None
 
         logging.debug("Waiting for login")
         wait.until(lambda driver: "login" not in driver.current_url)
@@ -65,8 +68,18 @@ class SessionStealer:
         
     
     def selector(self):
-        #self.browser.execute_script("alert(\"Volg de aanwijzingen op de terminal!\");")
+        # Gebruiker moet wat gaan doen!
+        self.browser.execute_script("alert(\"Volg de aanwijzingen op de terminal!\");")
         logging.warn("Volg de aanwijzingen op dit scherm!")
+
+        print("\nDruk op ENTER om door te gaan")
+
+        # Het boeit me echt niet wat je hier invult, druk gewoon op ENTER
+        # Dit is alleen om de thread te blokken
+        input()
+
+        # Get rid of alert
+        self.browser.switch_to.alert.dismiss()
 
         print("\nNavigeer naar de pagina van het evenement waar je bij wilt inschrijven\nAls je klaar bent, druk je hier op de Enter toets\n")
         
