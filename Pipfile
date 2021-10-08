@@ -8,6 +8,7 @@ selenium = "*"
 colorlog = "*"
 requests = "*"
 requests-toolbelt = "*"
+lxml = "*"
 
 [dev-packages]
 pylint = "*"

@@ -144,3 +144,4 @@ assets/
 .vscode/
 
 Pipfile.lock
+src/main.py

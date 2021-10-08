@@ -79,7 +79,11 @@ class SessionStealer:
         input()
 
         # Get rid of alert
-        self.browser.switch_to.alert.dismiss()
+        try:
+            self.browser.switch_to.alert.dismiss()
+        except Exception:
+            pass
+        
 
         print("\nNavigeer naar de pagina van het evenement waar je bij wilt inschrijven\nAls je klaar bent, druk je hier op de Enter toets\n")
         
