@@ -13,6 +13,8 @@ logging = log.init_logger("SessionStealer", True)
 class SessionStealer:
     def __init__(self):
         driver_path = "../assets/geckodriver"
+
+        # De next parameter is bestand tegen open redirects....jammer
         self.t_url = "https://www.asvtaste.nl/login?next=https%3A%2F%2Fwww.asvtaste.nl%2Fmijn-asv-taste%2Fevenementen"
         options = webdriver.FirefoxOptions()
         self.browser = webdriver.Firefox(options=options, executable_path=driver_path)
@@ -20,6 +22,7 @@ class SessionStealer:
         self.window = self.browser.current_window_handle
         self.logged_in = False
 
+    # Login flow
     def login(self):
         logging.debug("Navigating to login page!")
         self.browser.get(self.t_url)
@@ -97,6 +100,7 @@ class SessionStealer:
         t = threading.Thread(target=inp)
         t.start()
         
+        # Ik ben zo fucking trots op dit
         while t.is_alive():
             try:
                 if not "evenementen" in self.browser.current_url:

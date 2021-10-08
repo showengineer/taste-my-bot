@@ -115,8 +115,10 @@ def join(session, koekjes, event_url) -> bool:
 
     # Dit gebeurt VAAK. 
     # Ik snap niet waarom hier niet over is nagedacht.
-    # "Mhm, er gaat een kroegavond komen, de registratie is om 12 uur 
-    # en IEDEREEN WIL KOMEN! Hoe zou het komen dat de website platligt?"
+    # "Mhm, iedereen wil naar de kroegavond en de registratie is net open.
+    # Waarom is de server down?" 
+    # 
+    # Huilen.
     elif confirm_r.status_code == 500 or confirm_r.status_code == 502:
         logging.warn("Server is overloaded!")
         return False
