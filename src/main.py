@@ -160,7 +160,7 @@ def threadloop(session, koek, event_url):
 
 # Maakt een lijst van thread workers
 # Ze zijn nog niet actief tho.
-def gen_threads(session, koek, event_url, c = 8):
+def gen_threads(session, koek, event_url, c = 1):
     l = []
 
     for _ in range(c):
@@ -233,7 +233,7 @@ if __name__ == "__main__":
         interessante_koekjes[f"{koekje['name']}"] = f"{koekje['value']}"
 
 
-    logging.info("Creating 8 workers...")
+    logging.info("Creating 1 worker...")
     thread_list = gen_threads(ses, interessante_koekjes, event_url)
 
     if time == -1:
@@ -257,9 +257,3 @@ if __name__ == "__main__":
         exit(0)
     else:
         exit(1)
-    
-
-
-    
-
-    
