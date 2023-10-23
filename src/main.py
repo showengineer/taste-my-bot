@@ -5,7 +5,7 @@ import requests
 # Loggen met kleur!
 import log 
 
-# Zodat ik met 100 requests tegelijk kan inschrijven!
+
 import threading
 
 # Tijd enz
@@ -23,14 +23,11 @@ success = False
 kill = False
 thread_list = None
 
-# "Ik heb hier een pakketje voor ene Neo Naz-"
-# "Leuke naam"
+
 logging = log.init_logger("Taste my bott", True)
 
-# Als we naar /confirm posten. 
-# Schijnbaar moet je een Referer header meegeven. 
-# What a sissy... (zeg met nifterig stemmetje...
-# voor de ultieme mood).
+# Voor als we naar /confirm posten. 
+# Schijnbaar moet je een Referer header meegeven anders doet ie t niet. 
 def post_confirm(session, url, csrf_token):
     headers = {
         "Referer" : url
@@ -40,10 +37,7 @@ def post_confirm(session, url, csrf_token):
 
 
 # We moeten eerst naar /join
-# Want daar zit een CSRF token in die we weer nodig hebben
-# Om /confirm te laten werken. Gezellig!
-# Nu maar hopen dat we geen extra shit moeten invullen.
-# Want anders is het allemaal een beetje J A M M E R!
+# Want daar zit een CSRF token in die we weer nodig hebben om /confirm te laten werken.
 def initiate_join_event(session, event_url):
     url = f"{event_url}/join"
     r = session.get(url)
@@ -83,7 +77,7 @@ def join(session, koekjes, event_url) -> bool:
         logging.critical("Could not find form!")
         return -1
     
-    # Dit moet er maar één zijn maar ja, je weet maar nooit.
+    # Dit moet er maar één zijn maar ja, met congressus weet je maar nooit.
     confirm_url = links[0]
 
     logging.debug(f"Found action url: {confirm_url}")
@@ -99,7 +93,7 @@ def join(session, koekjes, event_url) -> bool:
         logging.critical("Could not find CSRF token!")
         return -1
 
-    # Ook hier hoort maar één token in te zitten, maar ja.
+    # Ook hier hoort maar één token in te zitten, maar ja...
     token = tokens[0]
 
     logging.debug(f"Found CSRF token: {token}")
@@ -146,7 +140,7 @@ def threadloop(session, koek, event_url):
             r = join(session, koek, event_url)
 
             # Pak resultaat
-            # Kill commando, set and break.
+            # Bij onbekende error: kill commando, set and break.
             if r == -1:
                 kill = True
                 break
@@ -158,8 +152,6 @@ def threadloop(session, koek, event_url):
         except Exception:
             pass
 
-# Maakt een lijst van thread workers
-# Ze zijn nog niet actief tho.
 def gen_threads(session, koek, event_url, c = 1):
     l = []
 
