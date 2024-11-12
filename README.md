@@ -1,6 +1,6 @@
-# Taste my bott
+# Taste my bot
 
-Haha grappige joke dit
+Taste ticket bot. Werkt niet meer sinds 2023, want geen zin om m te updaten.
 
 
 # Uitvoeren met source
